@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/space-before-function-paren */
 /* eslint-disable space-before-function-paren */
-import { mockPropertyPrice } from '../../../domain/models/mocks/property-price'
 import { PropertyPriceModel } from '../../../domain/models/property-price'
 import { PropertyPrice } from '../../../domain/usecases/calculate-property-price'
-import { HttpClient } from '../../protocols/http/http-client'
+import { UnexpectedError } from '../../../presentation/errors/unexpected-error'
+import { HttpClient, HttpStatusCode } from '../../protocols/http/http-client'
 
 export class RemoteCalculatePropertyPrice implements PropertyPrice {
   constructor(
@@ -12,11 +12,13 @@ export class RemoteCalculatePropertyPrice implements PropertyPrice {
   ) { }
 
   async calculate (): Promise<PropertyPriceModel> {
-    await this.httpClient.request({
+    const httpClientResponse = await this.httpClient.request({
       url: this.url,
       method: 'get'
     })
-
-    return mockPropertyPrice(200)
+    switch (httpClientResponse.statusCode) {
+      case HttpStatusCode.ok: return httpClientResponse.body
+      case HttpStatusCode.serverError: throw new UnexpectedError()
+    }
   }
 }
