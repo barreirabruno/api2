@@ -5,7 +5,7 @@ import { PropertyPriceModel } from '../../../domain/models/property-price'
 import { PropertyPrice } from '../../../domain/usecases/calculate-property-price'
 import { HttpClient } from '../../protocols/http/http-client'
 
-export class CalculatePropertyPrice implements PropertyPrice {
+export class RemoteCalculatePropertyPrice implements PropertyPrice {
   constructor(
     private readonly url: string,
     private readonly httpClient: HttpClient
