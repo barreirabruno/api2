@@ -14,14 +14,16 @@ export const MockHttpRequest = (): HttpClientRequest => ({
   }
 })
 
+export const MockHttpResponse = (): any => ({
+  data: {
+    propertyA: 'any_data_from_axios_request',
+    propertyB: 'any_data_from_axios_request'
+  },
+  status: 200
+})
+
 export const mockAxios = (): jest.Mocked<typeof axios> => {
   const mockedAxios = axios as jest.Mocked<typeof axios>
-  mockedAxios.request.mockClear().mockResolvedValue({
-    data: {
-      propertyA: 'any_data_from_axios_request',
-      propertyB: 'any_data_from_axios_request'
-    },
-    status: 200
-  })
+  mockedAxios.request.mockClear().mockResolvedValue(MockHttpResponse())
   return mockedAxios
 }
