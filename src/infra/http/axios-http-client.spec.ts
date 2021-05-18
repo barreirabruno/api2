@@ -1,58 +1,28 @@
-import { HttpClient, HttpClientRequest, HttpClientResponse } from '../../data/protocols/http/http-client'
-import axios, { AxiosResponse } from 'axios'
+import { AxiosHttpClient } from './axios-http-client'
+import { mockAxios, MockHttpRequest, MockHttpResponse } from './mocks/axios-http-client'
+
+import axios from 'axios'
 
 jest.mock('axios')
 
-const MockHttpRequest = (): HttpClientRequest => ({
-  url: 'http://any_url',
-  method: 'post',
-  body: {
-    propertyA: 'any_element',
-    propertyB: 'any_element'
-  },
-  headers: {
-    propertyA: 'any_element',
-    propertyB: 'any_element'
-  }
-})
-
-const mockAxios = (): jest.Mocked<typeof axios> => {
-  const mockedAxios = axios as jest.Mocked<typeof axios>
-  mockedAxios.request.mockClear().mockResolvedValue({
-    data: {
-      propertyA: 'any_data_from_axios_request',
-      propertyB: 'any_data_from_axios_request'
-    },
-    status: 200
-  })
-  return mockedAxios
+interface SutTypes {
+  sut: AxiosHttpClient
+  mockedAxios: jest.Mocked<typeof axios>
 }
 
-class AxiosHttpClient implements HttpClient {
-  async request (data: HttpClientRequest): Promise<HttpClientResponse> {
-    let axiosReponse: AxiosResponse
-    try {
-      axiosReponse = await axios.request({
-        url: data.url,
-        method: data.method,
-        data: data.body,
-        headers: data.headers
-      })
-    } catch (error) {
-      axiosReponse = error.response
-    }
-    return {
-      statusCode: axiosReponse.status,
-      body: axiosReponse.data
-    }
+const makeSut = (): SutTypes => {
+  const axios = mockAxios()
+  const sut = new AxiosHttpClient()
+  return {
+    sut: sut,
+    mockedAxios: axios
   }
 }
 
 describe('AxiosHttpClient', () => {
   test('Should call axios with correct values', async () => {
     const requestData = MockHttpRequest()
-    const sut = new AxiosHttpClient()
-    const mockedAxios = mockAxios()
+    const { sut, mockedAxios } = makeSut()
 
     await sut.request(requestData)
 
@@ -64,8 +34,7 @@ describe('AxiosHttpClient', () => {
     })
   })
   test('Should return correct response', async () => {
-    const sut = new AxiosHttpClient()
-    const mockedAxios = mockAxios()
+    const { sut, mockedAxios } = makeSut()
 
     const httpResponse = await sut.request(MockHttpRequest())
     const axiosResponse = await mockedAxios.request.mock.results[0].value
@@ -74,5 +43,15 @@ describe('AxiosHttpClient', () => {
       statusCode: axiosResponse.status,
       body: axiosResponse.data
     })
+  })
+  test('Should return correct error', () => {
+    const { sut, mockedAxios } = makeSut()
+    mockedAxios.request.mockRejectedValueOnce({
+      response: MockHttpResponse()
+    })
+
+    const promise = sut.request(MockHttpRequest())
+
+    expect(promise).toEqual(mockedAxios.request.mock.results[0].value)
   })
 })
