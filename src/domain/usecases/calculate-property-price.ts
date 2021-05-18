@@ -1,5 +1,5 @@
-import { PropertyPrice } from '../models/property-price'
+import { PropertyPriceModel } from '../models/property-price'
 
-export interface CalculatePropertyPrice {
-  calculate: (landSize: number) => PropertyPrice
+export interface PropertyPrice {
+  calculate: (landSize: number) => Promise<PropertyPriceModel>
 }
