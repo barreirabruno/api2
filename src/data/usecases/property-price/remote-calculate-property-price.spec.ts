@@ -38,6 +38,15 @@ class CalculatePropertyPrice implements PropertyPrice {
 }
 
 describe('Calculate property price', () => {
+  test('Should call HttpClient to get meter price', async () => {
+    const url = 'https://any_url'
+    const httpClientSpy = new HttpClientSpy()
+    const propertyPrice = new CalculatePropertyPrice(url, httpClientSpy)
+    await propertyPrice.calculate()
+
+    expect(httpClientSpy.url).toBe(url)
+    expect(httpClientSpy.method).toBe('get')
+  })
   test('Should return a property price on success', async () => {
     const url = 'https://any_url'
     const httpClientSpy = new HttpClientSpy()
