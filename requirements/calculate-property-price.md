@@ -9,4 +9,4 @@
 ## Exceções
 
 1. ✅ Retorna **400** caso a propriedade landSize seja menor que 10 ou maior que 10000
-2. [] Retorna **500** se de erro ao buscar o preço do metro quadrado na API1
+2. ✅ Retorna **500** se de erro ao buscar o preço do metro quadrado na API1
