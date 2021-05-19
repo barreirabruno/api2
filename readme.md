@@ -17,6 +17,8 @@ O objetivo dessa api é calcular e servir ao usuário o valor/preço do imóvel.
   - Jest
   - Supertest
   - Express
+  - Axios
+  - Nodemon
   - Heroku
 
 ## Teste de unidade e testes de integração
@@ -101,5 +103,6 @@ A construção da api2 foi feita por camadas, conforme o diagrama abaixo:
 
 ## Próximos passos
 
+ - Centralizar arquivos de teste(e relacionados, como mocks) em uma pasta de testes
  - Adicionar Swagger ao projeto
  - Processos de CI/CD no Heroku
