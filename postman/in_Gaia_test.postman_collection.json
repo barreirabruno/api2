@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "0d463780-f5b3-4050-aed8-b819575bca7a",
+		"name": "in_Gaia_test",
+		"description": "Backend challenge for inGaia.\nAPI1 - Use this api to get a fixed meter price.\nAPI2 - Use this api to calculate the property's price.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API1",
+			"item": [
+				{
+					"name": "meter-price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_api1}}/api/meter-price",
+							"host": [
+								"{{url_api1}}"
+							],
+							"path": [
+								"api",
+								"meter-price"
+							]
+						},
+						"description": "Get a fixed square meter price."
+					},
+					"response": []
+				}
+			],
+			"description": "Returns a fixed square meter price."
+		},
+		{
+			"name": "API2",
+			"item": [
+				{
+					"name": "property-price",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"landSize\": 96\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api2}}/api/calculate-property-price",
+							"host": [
+								"{{url_api2}}"
+							],
+							"path": [
+								"api",
+								"calculate-property-price"
+							]
+						},
+						"description": "Calculates the property value for you, land size must be between 10 or 10000"
+					},
+					"response": []
+				}
+			],
+			"description": "API2 - Provide a land size to calculate the property price"
+		}
+	]
+}
