@@ -16,7 +16,7 @@ export class CalculatePropertyPriceController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     for (const field of ['landSize']) {
-      if (httpRequest.body[field] === undefined || httpRequest.body[field] === '' || httpRequest.body[field] === null) {
+      if (httpRequest.body[field] === undefined || httpRequest.body[field] === '' || httpRequest.body[field] === null || isNaN(Number(httpRequest.body[field]))) {
         return badRequest(new MissingParamError(field))
       }
     }
