@@ -1,3 +1,4 @@
 import app from './config/app'
+import env from './config/env'
 
-app.listen(5050, () => console.log('Application up and running at http://localhost/5050'))
+app.listen(env.port, () => console.log(`Application up and running at http://localhost/${env.port}`))
