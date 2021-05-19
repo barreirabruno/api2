@@ -4,6 +4,7 @@ import { HttpRequest } from '../protocols/http'
 import { PropertyPrice } from '../../domain/usecases/calculate-property-price'
 import { PropertyPriceModel } from '../../domain/models/property-price'
 import { mockMeterPrice } from '../../domain/models/mocks/meter-price'
+import { OutOfRangeParamError } from '../errors/out-of-rang-param-error'
 
 const makeRequest = (landSizeValue: any): HttpRequest => {
   return {
@@ -45,6 +46,12 @@ const makeSut = (): SutTypes => {
 
 describe('Calculate meter price controller', () => {
   test('Should return 400 if land size is invalid', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeRequest(5))
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new OutOfRangeParamError('landSize'))
+  })
+  test('Should return 400 if no land size is provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeRequest(null))
     expect(httpResponse.statusCode).toEqual(400)
