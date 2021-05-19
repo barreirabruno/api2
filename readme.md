@@ -50,7 +50,7 @@ Comandos para instalar e inicializar
   
 Comandos para finalizar a execução
 
-  - **npm run stop**
+  - **npm run down**
     - Para a execução do container **in-gaia-teste-api2-container**, portanto, desliga a aplicação API1
 
 ## Postman
