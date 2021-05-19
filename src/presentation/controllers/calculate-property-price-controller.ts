@@ -5,6 +5,7 @@ import { HttpRequest, HttpResponse } from '../protocols/http'
 import { badRequest, success } from '../helpers/httpHelpers'
 import { MissingParamError } from '../errors/missing-param-error'
 import { PropertyPrice } from '../../domain/usecases/calculate-property-price'
+import { OutOfRangeParamError } from '../errors/out-of-rang-param-error'
 
 export class CalculatePropertyPriceController implements Controller {
   private readonly propertyPrice: PropertyPrice
@@ -18,6 +19,12 @@ export class CalculatePropertyPriceController implements Controller {
       if (httpRequest.body[field] === undefined || httpRequest.body[field] === '' || httpRequest.body[field] === null) {
         return badRequest(new MissingParamError(field))
       }
+    }
+
+    const { landSize } = httpRequest.body
+
+    if (landSize < 10 || landSize > 10000) {
+      return badRequest(new OutOfRangeParamError('landSize'))
     }
 
     const calculatePropertyPrice = await this.propertyPrice.calculate(httpRequest.body.landSize)
