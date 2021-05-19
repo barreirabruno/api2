@@ -5,6 +5,8 @@ import { PropertyPrice } from '../../domain/usecases/calculate-property-price'
 import { PropertyPriceModel } from '../../domain/models/property-price'
 import { mockMeterPrice } from '../../domain/models/mocks/meter-price'
 import { OutOfRangeParamError } from '../errors/out-of-rang-param-error'
+import { ServerError } from '../errors/server-error'
+import { serverError } from '../helpers/httpHelpers'
 
 const makeRequest = (landSizeValue: any): HttpRequest => {
   return {
@@ -45,6 +47,12 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Calculate meter price controller', () => {
+  test('should return 500 if calculate property price fails', async () => {
+    const { sut, propertyPriceStub } = makeSut()
+    jest.spyOn(propertyPriceStub, 'calculate').mockRejectedValueOnce(new ServerError('It was not possible to process it now, please try again later'))
+    const httpResponse = await sut.handle(makeRequest(96))
+    expect(httpResponse).toEqual(serverError(new ServerError('It was not possible to process it now, please try again later')))
+  })
   test('Shoudl return 400 if land size is not a number', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeRequest('not_valid_landSize'))
