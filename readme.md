@@ -48,12 +48,12 @@ Comandos para instalar e inicializar
  
  - **npm run up**
    - Executa a api baseado em uma imagem do node 14.x (ver especificação da engine no package.json)
-   - Cria um container para a aplicação com o nome **in-gaia-teste-api1-container**
+   - Cria um container para a aplicação com o nome **in-gaia-teste-api2-container**
   
 Comandos para finalizar a execução
 
   - **npm run down**
-    - Para a execução do container **in-gaia-teste-api2-container**, portanto, desliga a aplicação API1
+    - Para a execução do container **in-gaia-teste-api2-container**, portanto, desliga a aplicação API2
 
 ## Postman
 
@@ -88,7 +88,7 @@ A construção da api2 foi feita por camadas, conforme o diagrama abaixo:
  - C: Camada **data**
     - Esta camada depende das fontes de dados da aplicação.
     - Coordena os dados vindos de diferentes fontes de dados.
-    - API1 tem uma fonte de dados, a API1.
+    - API2 tem uma fonte de dados, a API1.
     - Esta camada utiliza um cliente http para consumir a API1.
      
  - D: Camada **infra**
