@@ -11,7 +11,7 @@ export class RemoteCalculatePropertyPrice implements PropertyPrice {
     private readonly httpClient: HttpClient
   ) { }
 
-  async calculate (): Promise<PropertyPriceModel> {
+  async calculate (landSize: number): Promise<PropertyPriceModel> {
     const httpClientResponse = await this.httpClient.request({
       url: this.url,
       method: 'get'
