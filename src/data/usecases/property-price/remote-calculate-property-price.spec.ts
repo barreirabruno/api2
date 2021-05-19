@@ -4,6 +4,8 @@ import { HttpStatusCode } from '../../protocols/http/http-client'
 import { UnexpectedError } from '../../../presentation/errors/unexpected-error'
 import { mockMeterPrice } from '../../../domain/models/mocks/meter-price'
 
+const mockLandSize = 96
+
 interface SutTypes {
   httpClientSpy: HttpClientSpy
   sut: RemoteCalculatePropertyPrice
@@ -21,7 +23,7 @@ const makeSut = (url: string = 'https://any_url'): SutTypes => {
 describe('Calculate property price', () => {
   test('Should call HttpClient to get meter price', async () => {
     const { sut, httpClientSpy } = makeSut()
-    await sut.calculate()
+    await sut.calculate(mockLandSize)
 
     expect(httpClientSpy.url).toBe('https://any_url')
     expect(httpClientSpy.method).toBe('get')
@@ -32,7 +34,7 @@ describe('Calculate property price', () => {
       statusCode: HttpStatusCode.serverError
     }
 
-    const promise = sut.calculate()
+    const promise = sut.calculate(mockLandSize)
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
@@ -43,7 +45,7 @@ describe('Calculate property price', () => {
       statusCode: HttpStatusCode.ok,
       body: httpResult
     }
-    const remoteCalculatePropertyPriceResponse = await sut.calculate()
+    const remoteCalculatePropertyPriceResponse = await sut.calculate(mockLandSize)
     expect(remoteCalculatePropertyPriceResponse).toEqual(httpResult)
   })
 })
