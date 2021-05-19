@@ -45,6 +45,12 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Calculate meter price controller', () => {
+  test('Shoudl return 400 if land size is not a number', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeRequest('not_valid_landSize'))
+    expect(httpResponse.statusCode).toEqual(400)
+    expect(httpResponse.body).toEqual(new MissingParamError('landSize'))
+  })
   test('Should return 400 if land size is invalid', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeRequest(5))
