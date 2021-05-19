@@ -63,7 +63,7 @@ O Postman pode ser utilizado para consumir a api em ambiente local e de produç�
 
 A construção da api2 foi feita por camadas, conforme o diagrama abaixo: 
 
-[![alt text](./public/img/api1-arch-diagram.png "Veja o diagrama no draw.io")](https://drive.google.com/file/d/1SMhHeXSmIa9lMosHK30CfixDfu5T9lfZ/view?usp=sharing)
+[![alt text](./public/img/api2-arch-diagram.png "Veja o diagrama no draw.io")](https://drive.google.com/file/d/1SMhHeXSmIa9lMosHK30CfixDfu5T9lfZ/view?usp=sharing)
 
 **Leitura do diagrama**
 
