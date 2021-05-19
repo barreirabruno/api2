@@ -22,7 +22,13 @@ const makeSut = (url: string = 'https://any_url'): SutTypes => {
 
 describe('Calculate property price', () => {
   test('Should call HttpClient to get meter price', async () => {
-    const { sut, httpClientSpy } = makeSut()
+    const httpResult = mockMeterPrice()
+    const { sut, httpClientSpy } = makeSut('https://any_url')
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+
     await sut.calculate(mockLandSize)
 
     expect(httpClientSpy.url).toBe('https://any_url')
@@ -46,6 +52,10 @@ describe('Calculate property price', () => {
       body: httpResult
     }
     const remoteCalculatePropertyPriceResponse = await sut.calculate(mockLandSize)
-    expect(remoteCalculatePropertyPriceResponse).toEqual(httpResult)
+    expect(remoteCalculatePropertyPriceResponse).toEqual({
+      landSize: mockLandSize,
+      squareMeterPrice: httpResult.price,
+      propertyPrice: expect.any(Number)
+    })
   })
 })
