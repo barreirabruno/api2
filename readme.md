@@ -73,16 +73,16 @@ A construção da api2 foi feita por camadas, conforme o diagrama abaixo:
     - Depende da camada de domínio.
     - Esta camada executa um ou mais casos de uso.
     - Ocorre a validação dos dados recebidos pela requisição http, para garantir a execução do caso de uso.
-    - Esta camada implementa a regra de negócio de que a quantidade de metros quadrados deve estar entre 10 e 10000
+    - Esta camada implementa a regra de negócio: a quantidade de metros quadrados deve estar entre 10 e 10000.
 
  - B: Camada **domain**
     - Esta camada não depende de nenhuma outra camada da aplicação.
     - Define o model __property-price__ e __meter-price__
     - Implementa uma função que calcula o valor do imóvel
       - Parâmetros dessa função:
-        - Quantidade de metros quadrados
-        - Preço do metro quadrado
-      - Retorno dessa função
+        - Quantidade de metros quadrados.
+        - Preço do metro quadrado.
+      - Retorno dessa função:
         - O valor do imóvel.
   
  - C: Camada **data**
@@ -93,8 +93,8 @@ A construção da api2 foi feita por camadas, conforme o diagrama abaixo:
      
  - D: Camada **infra**
     - Esta camada conhece bibliotecas externas, no caso, o cliente http - Axios.
-    - Esta camada implementa os repositórios das fontes de dados, no caso, o Axios.
-    - Outras bibliotecas, como por exemplo MongoDb, poderiam ficar nessa camada.
+    - Esta camada implementa os repositórios/clientes das fontes de dados, no caso, o Axios.
+    - Outras bibliotecas, como por exemplo MongoDb, poderiam ficar nesta camada.
   
  - E: Camada **main**
     - Esta camada depende da camada de apresentação.
