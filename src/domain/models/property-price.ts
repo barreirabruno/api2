@@ -3,3 +3,7 @@ export interface PropertyPriceModel {
   squareMeterPrice: string
   propertyPrice: number
 }
+
+export const calculatePropertyPrice = (landSize: number, meterPrice: number): number => {
+  return landSize * meterPrice
+}
