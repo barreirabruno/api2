@@ -2,7 +2,7 @@
 /* eslint-disable space-before-function-paren */
 import { Controller } from '../protocols/controller'
 import { HttpRequest, HttpResponse } from '../protocols/http'
-import { badRequest, success } from '../helpers/httpHelpers'
+import { badRequest, serverError, success } from '../helpers/httpHelpers'
 import { MissingParamError } from '../errors/missing-param-error'
 import { PropertyPrice } from '../../domain/usecases/calculate-property-price'
 import { OutOfRangeParamError } from '../errors/out-of-rang-param-error'
@@ -15,20 +15,27 @@ export class CalculatePropertyPriceController implements Controller {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    for (const field of ['landSize']) {
-      if (httpRequest.body[field] === undefined || httpRequest.body[field] === '' || httpRequest.body[field] === null || isNaN(Number(httpRequest.body[field]))) {
-        return badRequest(new MissingParamError(field))
+    try {
+      for (const field of ['landSize']) {
+        if (httpRequest.body[field] === undefined ||
+          httpRequest.body[field] === '' ||
+          httpRequest.body[field] === null ||
+          isNaN(Number(httpRequest.body[field]))) {
+          return badRequest(new MissingParamError(field))
+        }
       }
+
+      const { landSize } = httpRequest.body
+
+      if (landSize < 10 || landSize > 10000) {
+        return badRequest(new OutOfRangeParamError('landSize'))
+      }
+
+      const calculatePropertyPrice = await this.propertyPrice.calculate(httpRequest.body.landSize)
+
+      return success(calculatePropertyPrice)
+    } catch (error) {
+      return serverError(error)
     }
-
-    const { landSize } = httpRequest.body
-
-    if (landSize < 10 || landSize > 10000) {
-      return badRequest(new OutOfRangeParamError('landSize'))
-    }
-
-    const calculatePropertyPrice = await this.propertyPrice.calculate(httpRequest.body.landSize)
-
-    return success(calculatePropertyPrice)
   }
 }
